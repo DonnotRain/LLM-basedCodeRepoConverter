@@ -12,6 +12,9 @@
 [Rr]elease/
 x64/
 [Bb]in/
+.vs/
+.vscode/
+.cursor/
 [Oo]bj/
 
 # MSTest test Results

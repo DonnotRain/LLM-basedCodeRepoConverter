@@ -36,6 +36,7 @@ public class CodeConverter
         }
         else
         {
+            Console.WriteLine("not supported llm provider, please input again!");
             Console.WriteLine("未支持的LLM供应商类型，请重新输入！");
             return;
         }
@@ -241,8 +242,10 @@ public class CodeConverter
             var markdownResult = Markdown.Parse(codeConvertContent);
 
             // 使用正则表达式去除markdown的json标记及前后多余内容
-            string fileJson = Regex.Replace(codeConvertContent, @"```json\s*([\s\S]*?)\s*```", "$1").Trim();
-            var conversionResult = JsonConvert.DeserializeObject<ConversionResult>(fileJson);
+            try
+            {
+                string fileJson = Regex.Replace(codeConvertContent, @"```json\s*([\s\S]*?)\s*```", "$1").Trim();
+                var conversionResult = JsonConvert.DeserializeObject<ConversionResult>(fileJson);
 
             if (conversionResult.Status == "fail")
             {
@@ -270,12 +273,16 @@ public class CodeConverter
                         Directory.CreateDirectory(targetDir);
                     }
                     Console.WriteLine($"[文件写入路径]: {targetFilePath}");
-                    File.WriteAllText(targetFilePath, codeFile.CodeContent);
+                        File.WriteAllText(targetFilePath, codeFile.CodeContent);
+                    }
                 }
             }
-
+            catch (Exception ex)
+            {
+                Console.WriteLine($"解析JSON内容失败: {ex.Message}");
+                allNoticeWriter.WriteLine($"[文件转换失败]: {file},{ex.Message}");
+            }
         }
-    
     }
 
     private static async Task<string> ReadAndReplacePromp(string targetLanguage, string targetFramework, string otherRequirements, StreamReader promptReader)

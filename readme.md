@@ -63,7 +63,7 @@ LLM智能代码库转换器是一个基于大语言模型的代码转换工具�
 
 [火山引擎体验链接](https://www.volcengine.com/experience/ark?utm_term=202502dsinvite&ac=DSASUQY5&rc=TCWF24UW)
 
-![火山引擎邀请码](./docs/code.png)
+![火山引擎邀请码](./Docs/code.png)
 
 **运行程序**
 - 输入需要转换的代码库zip文件路径 
@@ -74,9 +74,9 @@ LLM智能代码库转换器是一个基于大语言模型的代码转换工具�
 - 输入LLM API Key
 - 等待转换结果，在原路径生成转换后的代码库文件夹  
  
-![输入示例](./docs/input_sample.jpg)
-![代码库结构示例](./docs/file_structure.jpg)
-![分析示例](./docs/assessmention.png)
+![输入示例](./Docs/input_sample.jpg)
+![代码库结构示例](./Docs/file_structure.jpg)
+![分析示例](./Docs/assessmention.png)
 
 ## 注意事项
 - 确保有足够的API调用额度

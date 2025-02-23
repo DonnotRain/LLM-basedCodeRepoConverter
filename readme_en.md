@@ -53,7 +53,7 @@ Welcome to use my Volcano Engine invitation code: TCWF24UW
 
 [Volcano Engine Experience Link](https://www.volcengine.com/experience/ark?utm_term=202502dsinvite&ac=DSASUQY5&rc=TCWF24UW)
 
-![Volcano Engine Invitation Code](./docs/code.png)
+![Volcano Engine Invitation Code](./Docs/code.png)
 
 **Run Program**
 - Enter the path of the zip file of the code repository that needs to be converted.
@@ -64,9 +64,9 @@ Welcome to use my Volcano Engine invitation code: TCWF24UW
 - Enter the LLM API Key.
 - Wait for the conversion result, and the converted code repository folder will be generated in the original path.
  
-![Input Example](./docs/input_sample.jpg)
-![Code Repository Structure Example](./docs/file_structure.jpg)
-![Analysis Example](./docs/assessmention.png)
+![Input Example](./Docs/input_sample.jpg)
+![Code Repository Structure Example](./Docs/file_structure.jpg)
+![Analysis Example](./Docs/assessmention.png)
 
 ## Precautions
 - Make sure you have enough API call quota.

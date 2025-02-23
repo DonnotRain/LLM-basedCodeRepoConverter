@@ -42,6 +42,8 @@
 - 保持线程模型与整体架构一致
 - 首行添加版本标记：// Generated from {原语言} v{版本号}
 - 生成配套的配置文件（如CMakeLists.txt/pom.xml/appsettings.json等）
+- 仅需输出JSON格式内有的字段，不需要过多说明。
+
 ```
 
 ---
@@ -149,15 +151,20 @@
    - 优化性能瓶颈
    - 提升代码可读性
 
-除代码外的其他内容以 JSON 的形式输出，输出的 JSON 需遵守以下的格式：
+确保严格按照 JSON 的形式输出，输出的 JSON 需遵守以下的格式：
 ```json
 {
 "status": "<转换结果状态枚举：success/skip/fail>",
-"resultDescription": <转换结果说明>,
-"fileRelativePath": <文件相对路径含文件名：目标技术栈内映射到的文件路径>,
-"codeContent": <转换后的代码文件内容>,
-"configFileContent": <配套配置文件内容>,
-"convertDescription": <转换说明>,
-"attention": <注意事项>
+"resultDescription": <转换结果说明：string类型>,
+"files":[
+{
+"fileType": <文件类型：code/config>,
+"fileName": <转换后的文件名：string类型>,
+"codeContent": <转换后的代码文件内容：string类型>,
 }
-``` 
+]
+"configFileContent": <配套配置文件内容：string类型>,
+"convertDescription": <转换说明：string类型>,
+"attention": <注意事项：string类型>
+}
+```

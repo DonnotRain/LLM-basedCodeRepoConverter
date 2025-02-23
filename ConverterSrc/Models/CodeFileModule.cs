@@ -6,7 +6,7 @@ namespace LLMSmartConverter.Models
     /// 代码文件模块
     /// </summary>
     public class CodeFileModule
-    { 
+    {
         /// <summary>
         /// 文件夹路径
         /// </summary>
@@ -16,5 +16,10 @@ namespace LLMSmartConverter.Models
         /// 模块说明
         /// </summary>
         public string module { get; set; }
+
+        /// <summary>
+        /// 目标技术栈下的文件夹路径
+        /// </summary>
+        public string targetDirectory { get; set; }
     }
 }

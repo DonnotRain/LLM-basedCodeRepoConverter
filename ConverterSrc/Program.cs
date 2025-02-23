@@ -9,68 +9,64 @@ class Program
 {
     static async Task Main(string[] args)
     {
-        Console.WriteLine("Hello, .NET 9!");
-        await CodeConverter.Analyse("景区票务系统");
+        Console.WriteLine("欢迎使用LLM代码库智能转换工具");
+        string zipFilePath = GetZipFilePath();
+
+        Console.Write("请输入需要转换到的目标开发语言（如C#、Java、GoLang）：");
+        string targetLanguage = Console.ReadLine();
+        Console.Write("请输入需要转换到的目标技术栈、框架及库（如ASP.NET Core+EF Core+Redis）：");
+        string targetFramework = Console.ReadLine();
+        Console.Write("请输入其他的转换要求及说明（如代码规范、安全标准、类型映射规则、目标库、目标模式等）：");
+        string otherRequirements = Console.ReadLine();
+
+        //尝试从参数中解析LLM供应商类型、API Key
+        string llmProvider = GetLlmProvider();
+        string llmApiKey = GetLlmApiKey();
+
+        await CodeConverter.Analyse(zipFilePath, targetLanguage, targetFramework, otherRequirements, llmProvider, llmApiKey);
     }
 
-    private static async Task Test()
+    private static string GetZipFilePath()
     {
-        OpenAIClient api = new(new ApiKeyCredential("sk-a71a1425915047bbbd8975cff36d3609"), new OpenAIClientOptions()
+        Console.Write("请输入需要转换的代码库zip文件路径(确保压缩包根目录有readme.md文件)：");
+        string zipFilePath = Console.ReadLine();
+        if (!File.Exists(zipFilePath))
         {
-            Endpoint = new Uri("https://api.deepseek.com/v1"),
-        });
-        var client = api.GetChatClient("deepseek-coder");
-        // var client = new OpenAIClient("sk-proj-1234567890");
-        // ChatClient client = new(model: "deepseek-reasoner", apiKey: "sk-a71a1425915047bbbd8975cff36d3609");
-
-        string text = """
-        作为资深系统分析师，请将用户需求转换为结构化JSON格式：
-    {
-    "功能模块": [{"名称":"","描述":"","输入数据":"","输出数据":""}],
-    "数据实体": [{"实体名":"","属性":[],"关系":""}],
-    "业务规则": ["规则描述"]
-    }
-    要求：属性需标注数据类型，关系使用箭头语法(如User->Order)
-    """;
-
-// string text = """
-//     作为资深系统分析师，请将用户需求转换为结构化JSON格式：
-//     {
-//       "功能模块": [{"名称":"","描述":"","输入数据":"","输出数据":""}],
-//       "数据实体": [{"实体名":"","属性":[],"关系":""}],
-//       "业务规则": ["规则描述"]
-//     }
-//     要求：属性需标注数据类型，关系使用箭头语法(如User->Order)
-//     """;  // 闭合符缩进 4 空格
-
-        var systemModuleChatMessage = ChatMessage.CreateSystemMessage("你是个业务领域专家，协助用户进行需求分析并转化成详细的可执行的软件需求，需要将需求整理后拆分成具体的应用端（如管理网页端、用户网页端、小程序端、H5端等）及对应页面，包含详细的页面布局、页面内容、页面交互。");
-
-        var systemChatMessage = ChatMessage.CreateSystemMessage("你是个业务领域专家，协助用户进行需求分析并转化成详细的可执行的软件需求，需要具体到每个模块每个页面，甚至包含详细的页面布局、页面内容、页面交互、页面数据、页面样式等，并给出详细的开发计划。");
-        
-        var userChatMessage = ChatMessage.CreateUserMessage("景区票务系统");
-
-        ChatMessage[] chatMessages = [systemModuleChatMessage, userChatMessage];
-        var options = new ChatCompletionOptions
-        {
-            Temperature = 0.5f,
-            TopLogProbabilityCount = null,
-        };
-
-        using StreamWriter writer = new("readme1.md", false);
-        string allccontent = "";
-        await foreach (StreamingChatCompletionUpdate delta in client.CompleteChatStreamingAsync(chatMessages, options))
-        {
-            if (delta.ContentUpdate.Count == 0) continue;
-
-            var content = delta.ContentUpdate[0].Text;
-            await writer.WriteAsync(content);
-            allccontent += content;
-            Console.WriteLine($"[ASSISTANT]: {content}, FinishReason: {delta.FinishReason}, Usage: {delta.Usage}");
+            Console.WriteLine("文件不存在，请重新输入！");
+            return GetZipFilePath();
         }
-        await writer.FlushAsync();
-
-        Console.WriteLine($"ChatFinished");
-        Console.WriteLine($"[完整方案]: {allccontent}");
-        // Console.ReadLine();
+        return zipFilePath;
     }
+
+    //获取输入的llmProvider
+    private static string GetLlmProvider()
+    {
+        Console.Write("请输入LLM供应商类型（1对应火山引擎、2对应深度求索官方、3对应腾讯云）：");
+        string llmProvider = Console.ReadLine();
+        if (string.IsNullOrEmpty(llmProvider))
+        {
+            Console.WriteLine("输入不能为空，请重新输入！");
+            return GetLlmProvider();
+        }
+        if (llmProvider != "1" && llmProvider != "2" && llmProvider != "3")
+        {
+            Console.WriteLine("输入的LLM供应商类型不正确，请重新输入！");
+            return GetLlmProvider();
+        }
+        return llmProvider;
+    }
+
+    //获取输入的llmApiKey
+    private static string GetLlmApiKey()
+    {
+        Console.Write("请输入LLM API Key：");
+        string llmApiKey = Console.ReadLine();
+        if (string.IsNullOrEmpty(llmApiKey))
+        {
+            Console.WriteLine("输入不能为空，请重新输入！");
+            return GetLlmApiKey();
+        }
+        return llmApiKey;
+    }
+
 }
